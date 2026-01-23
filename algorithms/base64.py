@@ -1,4 +1,5 @@
-from binary import ascii_to_bin
+from binary import ascii_to_bin, bin_to_ascii
+
 
 def char_to_base64(input: str) -> str:
     arr: list = []
@@ -6,11 +7,21 @@ def char_to_base64(input: str) -> str:
         arr.append(ascii_to_bin(ord(i)))
     text: str = ''.join(arr)
     arr = []
-    for i in range(0, len(text)):
+    for i in range(1, len(text)):
         if i % 6 == 0:
+            arr.append(text[i+1])
             arr.append(" ")
         else:
             arr.append(text[i])
+    chunk: list = []
+    final: list = []
+    for j in range(arr):
+        if arr[j] != " ":
+
+            chunk.append()
+        else: 
+            final.append(chunk)
+            chunk = []
 
     return arr   
 
