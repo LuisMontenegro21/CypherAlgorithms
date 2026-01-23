@@ -205,3 +205,48 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+# Gitignore for C
+# Compiled object files
+*.o
+
+# Precompiled Headers
+*.gch
+
+# Compiled Static Libraries
+*.a
+
+# Compiled Dynamic Libraries
+*.so
+*.dll
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.stackdump
+
+# IDEs and Editors
+*.swp
+*~
+.vscode/
+.idea/
+
+# Build directories
+/build/
+/bin/
+/obj/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Logs
+*.log
