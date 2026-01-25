@@ -6,23 +6,27 @@ def char_to_base64(input: str) -> str:
     for i in input:
         arr.append(ascii_to_bin(ord(i)))
     text: str = ''.join(arr)
+    print(text)
     arr = []
     for i in range(1, len(text)):
+        if i == 1:
+            arr.append(text[i-1])
         if i % 6 == 0:
-            arr.append(text[i+1])
+            arr.append(text[i])
             arr.append(" ")
         else:
             arr.append(text[i])
     chunk: list = []
     final: list = []
-    for j in range(arr):
-        if arr[j] != " ":
-
-            chunk.append()
-        else: 
-            final.append(chunk)
-            chunk = []
-
+    
+    for i in range(len(arr)):
+        for j in range(len(arr)):
+            if arr[j] != " ":
+                chunk.append(arr[i])
+            else: 
+                final.append(chunk)
+                chunk = []
+    print(''.join(arr))
     return arr   
 
 def base64_to_char(input: str) -> str:

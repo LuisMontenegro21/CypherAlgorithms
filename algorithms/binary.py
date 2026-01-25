@@ -6,7 +6,8 @@ def ascii_to_bin(ascii_char: int):
         y: int = x % 2
         arr.append(str(y))
         x //= 2
-    
+    if len(arr) < 8:
+        arr.append("0") # final bit
     arr = reversed(arr)
     return ''.join(arr)
 
