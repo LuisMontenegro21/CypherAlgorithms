@@ -1,33 +1,33 @@
 from binary import ascii_to_bin, bin_to_ascii
 
 
-def char_to_base64(input: str) -> str:
+def char_to_base64(input: str) -> list:
     arr: list = []
     for i in input:
         arr.append(ascii_to_bin(ord(i)))
     text: str = ''.join(arr)
-    print(text)
     arr = []
-    for i in range(1, len(text)):
-        if i == 1:
-            arr.append(text[i-1])
-        if i % 6 == 0:
-            arr.append(text[i])
-            arr.append(" ")
-        else:
-            arr.append(text[i])
     chunk: list = []
-    final: list = []
+
+    for l in text:
+        chunk.append(l)
+        if len(chunk) == 6:
+            arr.append(''.join(chunk))
+            chunk = []
+    # fill last chunk
+    if chunk:
+        while len(chunk) < 6:
+            chunk.append('0')
+        arr.append(''.join(chunk))
     
-    for i in range(len(arr)):
-        for j in range(len(arr)):
-            if arr[j] != " ":
-                chunk.append(arr[i])
-            else: 
-                final.append(chunk)
-                chunk = []
-    print(''.join(arr))
-    return arr   
+
+    final_arr: list = []
+
+    for i, a in enumerate(arr):
+        final_arr.append(chr(bin_to_ascii(a)))
+    # TODO missing padding
+    return final_arr
+
 
 def base64_to_char(input: str) -> str:
     raise NotImplementedError()

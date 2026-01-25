@@ -7,7 +7,8 @@ def caesar_cypher(text: str = "caesar", offset: int = 3) -> str:
             pass
         else:
             continue
-
+    
+    return ""
 
 
 

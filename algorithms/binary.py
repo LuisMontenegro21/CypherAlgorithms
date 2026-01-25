@@ -8,11 +8,14 @@ def ascii_to_bin(ascii_char: int):
         x //= 2
     if len(arr) < 8:
         arr.append("0") # final bit
-    arr = reversed(arr)
+    arr = reversed(arr) # type: ignore
     return ''.join(arr)
 
-def bin_to_ascii(bin_str: str):
-    pass
+def bin_to_ascii(bin_str: str) -> int:
+    ascii_num: int = 0
+    for i, b in enumerate(reversed(bin_str)):
+        ascii_num += (2**i) * int(b) 
+    return ascii_num
 
 
 # TODO assumes each byte is always LEN % 8 = 0
@@ -40,7 +43,7 @@ def char_to_bytes(text: str) -> str:
         if t.isalnum():
             arr.append(f"{ascii_to_bin(ord(t))}")
         else: 
-            arr.append(f"{ascii_to_bin(ord(" "))}")
+            arr.append(f"{ascii_to_bin(ord(' '))}")
             
     return ' '.join(arr)
 
