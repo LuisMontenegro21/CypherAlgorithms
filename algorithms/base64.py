@@ -1,7 +1,12 @@
 from binary import ascii_to_bin, bin_to_ascii
 
+###### made with ChatGPT 4o ######
+base64_chars: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+base64_dict: dict[int, str] = {i: ch for i, ch in enumerate(base64_chars)}
+###### ------------------- #######
 
-def char_to_base64(input: str) -> list:
+
+def binary_to_base64(input: str) -> list:
     arr: list = []
     for i in input:
         arr.append(ascii_to_bin(ord(i)))
@@ -24,12 +29,13 @@ def char_to_base64(input: str) -> list:
     final_arr: list = []
 
     for i, a in enumerate(arr):
-        final_arr.append(chr(bin_to_ascii(a)))
+        final_arr.append(bin_to_ascii(a))
     # TODO missing padding
     return final_arr
 
 
-def base64_to_char(input: str) -> str:
+def base64_to_binary(input: str) -> str:
+    arr: list = []
     raise NotImplementedError()
 
 if __name__ == '__main__':
