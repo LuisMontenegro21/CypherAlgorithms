@@ -28,37 +28,46 @@ def binary_to_base64(input_bin: str) -> str:
             chunk = []
 
     # fill last chunk
-    print("chunk before", chunk)
     if chunk:
-        padding: str = "00111101" # bin for '='
         while len(chunk) < 6:
             chunk.append('0')
-
         arr.append(''.join(chunk))
-    print("chunk after", chunk)
-
-
 
 
     final_arr: list = []
 
     for i, a in enumerate(arr):
         final_arr.append(base64_dict.get(bin_to_ascii(a), "?"))
+    # fill missing padding
+    
+    if len(final_arr) % 4 == 3:
+        final_arr.append("=")
+    elif len(final_arr) % 4 == 2:
+        final_arr.extend(["=", "="])
 
-
-    # TODO missing padding
     return ''.join(final_arr)
 
 
-def base64_to_binary(input_base64: str) -> list:
+def base64_to_binary(input_base64: str) -> str:
     arr: list = []
     for char in input_base64:
         arr.append(ascii_to_bin(base64_dict_swapped.get(char, 0)))
-    return arr
+    return ''.join(arr)
 
 
 def base64_to_ascii(input_base64: str) -> list:
-    arr: list = base64_to_binary(input_base64=input_base64)
+    bin_arr: str = base64_to_binary(input_base64=input_base64)
+    chunk: str = ""
+    output: list = []
+    print(len(bin_arr))
+    for i in range(len(bin_arr)):
+        chunk += bin_arr[i]
+        if i % 8 == 0:
+            output.append(bin_to_ascii(chunk))
+            chunk = ""
+    return output
+
+    
 
         
 
@@ -66,10 +75,14 @@ if __name__ == '__main__':
     try: 
         mode: str = input("Ingrese modo: ")
         text_input: str = input("Ingrese texto: ")
-        if mode == "encrypt":
+        if mode == "binary":
             print(binary_to_base64(input_bin=text_input))
-        elif mode == "decrypt":
+        elif mode == "b64":
             print(base64_to_binary(input_base64=text_input))
+        elif mode == "ascii":
+            print(base64_to_ascii(input_base64=text_input))
+        else:
+            pass
     except KeyboardInterrupt:
         print("Programa finalizado por usuario")
     else:
