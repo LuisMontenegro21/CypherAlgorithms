@@ -23,6 +23,14 @@ def vigenere_encrypt(text: str, key: str) -> str:
     return "".join(cypher)
 
 def vigenere_decrypt(text: str, key: str) -> str:
+    original_text = []
+    len_text: int = len(text)
+    len_key: int = len(key)
+    for t, k in zip(text, key):
+        curr_text_pos: int = char_to_index.get(t, 0)
+        curr_key_pos: int = char_to_index.get(k, 0)
+        # for row in matrix:
+        #     original_text.append(row.index())
     return ""
 
 
