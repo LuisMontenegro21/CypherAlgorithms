@@ -15,7 +15,7 @@ def binary_to_base64(input_bin: str) -> str:
             arr.append(ch)
 
     if len(arr) % 8 != 0:
-        return "Error: bin number is not divisible by 8"
+        raise ValueError("Not divisible by 8")
 
     text: str = ''.join(arr)
     arr = []
@@ -34,24 +34,27 @@ def binary_to_base64(input_bin: str) -> str:
         arr.append(''.join(chunk))
 
 
-    final_arr: list = []
+    result: str = ""
 
-    for i, a in enumerate(arr):
-        final_arr.append(base64_dict.get(bin_to_ascii(a), "?"))
+    for a in arr:
+        result += base64_dict.get(bin_to_ascii(a), "?")
     # fill missing padding
     
-    if len(final_arr) % 4 == 3:
-        final_arr.append("=")
-    elif len(final_arr) % 4 == 2:
-        final_arr.extend(["=", "="])
+    if len(result) % 4 == 3:
+        result += "="
+    elif len(result) % 4 == 2:
+        result += "=="
 
-    return ''.join(final_arr)
+    return result
 
 
 def base64_to_binary(input_base64: str) -> str:
     arr: list = []
     for char in input_base64:
-        arr.append(ascii_to_bin(base64_dict_swapped.get(char, 0)))
+        a: int = base64_dict_swapped.get(char, 0)
+        c: str = ascii_to_bin(a)
+        # print(f"bin: {c} ascii: {a}")
+        arr.append(c)
     return ''.join(arr)
 
 
@@ -59,7 +62,7 @@ def base64_to_ascii(input_base64: str) -> list:
     bin_arr: str = base64_to_binary(input_base64=input_base64)
     chunk: str = ""
     output: list = []
-    print(len(bin_arr))
+    
     for i in range(len(bin_arr)):
         chunk += bin_arr[i]
         if i % 8 == 0:
