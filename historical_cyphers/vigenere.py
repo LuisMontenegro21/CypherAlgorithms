@@ -3,6 +3,7 @@ characters: str = " abcdefghijklmnopqrstuvwxyz"
 length: int = len(characters)
 matrix: list[list[str]] = [[characters[(i+j)%length] for j in range(length)] for i in range(length)]
 char_to_index: dict[str, int] = {v: i for i, v in enumerate(characters)}
+index_to_char: dict[int, str] = {i: v for i,v in enumerate(characters)}
 
 def vigenere_encrypt(text: str, key: str) -> str:
     cypher: list = []
@@ -23,15 +24,25 @@ def vigenere_encrypt(text: str, key: str) -> str:
     return "".join(cypher)
 
 def vigenere_decrypt(text: str, key: str) -> str:
-    original_text = []
+    original_text: list[str] = []
     len_text: int = len(text)
     len_key: int = len(key)
-    for t, k in zip(text, key):
-        curr_text_pos: int = char_to_index.get(t, 0)
+    if len_text < len_key:
+        raise ValueError("Key length is longer than cypher text")
+
+    # match lengths 
+    new_key: str = ""
+    for i in range(len_text):
+        new_key += key[i % len_key]
+    
+    print(text, key)
+    for t, k in zip(text, new_key):
         curr_key_pos: int = char_to_index.get(k, 0)
-        # for row in matrix:
-        #     original_text.append(row.index())
-    return ""
+        row: list[str] = matrix[curr_key_pos]
+        original_char_index: int = row.index(t)
+        original_text.append(index_to_char.get(original_char_index, "?"))
+    
+    return "".join(original_text)
 
 
 if __name__ == '__main__':
