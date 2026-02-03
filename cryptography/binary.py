@@ -8,7 +8,7 @@ def ascii_to_bin(ascii_char: int):
         x //= 2
     while len(arr) < 8:
         arr.append("0") # final bits
-    arr = reversed(arr) # type: ignore
+    arr = arr[::-1]
     return ''.join(arr)
 
 def bin_to_ascii(bin_str: str) -> int:
@@ -24,6 +24,7 @@ if __name__ == '__main__':
     try: 
         mode: str = input("Ingrese modo: ")
         text_input: str = input("Ingrese texto: ")
+        print(ascii_to_bin(int(text_input)))
     except KeyboardInterrupt:
         print("Programa finalizado por usuario")
     else:

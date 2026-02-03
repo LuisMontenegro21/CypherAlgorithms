@@ -60,14 +60,23 @@ def base64_to_binary(input_base64: str) -> str:
 
 def base64_to_ascii(input_base64: str) -> list:
     bin_arr: str = base64_to_binary(input_base64=input_base64)
+
+
     chunk: str = ""
     output: list = []
-    
-    for i in range(len(bin_arr)):
-        chunk += bin_arr[i]
-        if i % 8 == 0:
-            output.append(bin_to_ascii(chunk))
+    i: int = 1
+    bin_arr = bin_arr[::-1] # reverse
+    while i < len(bin_arr):
+        bit: str = bin_arr[i-1]
+        chunk += bit
+        if i % 6 == 0:
+            print(chunk)
+            output.append(chunk)
             chunk = ""
+            i+=2 
+        i += 1
+
+
     return output
 
     
