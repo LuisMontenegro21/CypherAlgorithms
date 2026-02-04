@@ -1,3 +1,5 @@
+import time
+
 
 MIN_ASCII = 32
 MAX_ASCII = 126
@@ -11,6 +13,8 @@ def dynamic_key_gen(length: int, seed: int = 42) -> str:
     of ascii values. Use a pseudo-random number function to randomize since 
     external modules are not allowed
     '''
+    seed = seed * int(time.time() * 1000) # make it random with time
+
     key: list = []
     value = seed
     for _ in range(length):
@@ -40,9 +44,13 @@ def new_cypher_dynamic(text: str, seed: int = 42) -> str:
 if __name__ == '__main__':
     try: 
         text_input: str = input("Ingrese texto: ")
-        key: str = input("Ingrese llave: ")
-        seed: int = int(input("Ingrese semilla: "))
-        print()
+        mode: str = input("Ingrese modo: static | dynamic:  ")
+        if mode == "static":
+            key: str = input("Ingrese llave: ")
+            print(new_cypher_static(text_input, key))
+        elif mode == "dynamic":
+            seed: int = int(input("Ingrese semilla: "))
+            print(new_cypher_dynamic(text_input, seed))
 
     except KeyboardInterrupt:
         print("Programa finalizado por usuario")
