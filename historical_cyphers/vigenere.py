@@ -49,10 +49,11 @@ if __name__ == '__main__':
     try: 
         mode: str = input("Ingrese modo: ")
         text_input: str = input("Ingrese texto: ")
+        key: str = input("Ingrese: ")
         if mode == "encrypt": 
-            print(vigenere_encrypt(text=text_input, key="cryptii"))
+            print(vigenere_encrypt(text=text_input, key=key))
         elif mode == "decrypt":
-            print(vigenere_decrypt(text=text_input, key="cryptii"))
+            print(vigenere_decrypt(text=text_input, key=key))
 
     except KeyboardInterrupt:
         print("Programa finalizado por usuario")

@@ -2,10 +2,9 @@
 def xor_binary(binary_str: str, key: str) -> str:
 	if len(binary_str) != len(key):
 		raise ValueError(f"String and key must be the same size")
-
 	arr: list = []
-	for i, bn in enumerate(binary_str):
-		arr.append(str(int(bn) ^ int(key[i])))
+	for i, j in zip(binary_str, key):
+		arr.append(str(int(i) ^ int(j)))
 	return ''.join(arr)
 
 
