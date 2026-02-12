@@ -1,4 +1,4 @@
-characters: str = " abcdefghijklmnopqrstuvxyz"
+characters: str = "abcdefghijklmnopqrstuvwxyz"
 pos_to_char: dict[int, str] = {i : k for i, k in enumerate(characters)}
 char_to_pos: dict[str, int] = {k : i for i, k in enumerate(characters)}
 
