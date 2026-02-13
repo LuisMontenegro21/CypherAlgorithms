@@ -1,43 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BUFFER_SIZE 32
 
-char* encrypt_text(char* text, char* key, size_t text_size);
+void encrypt_text(char* text, char* key, size_t text_size);
 
-char* decrypt_text(char* text, char* key, size_t text_size);
+void decrypt_text(char* text, char* key, size_t text_size);
 
-char* keystream(unsigned int seed, size_t length);
+void keystream(unsigned int seed, char* key, size_t length);
+
+void print_weird_chars(char* text, size_t length);
 
 unsigned int convert_seed(char* seed);
 
 
 int main(){ 
-	char arr[BUFFER_SIZE]; 
+	char text[BUFFER_SIZE]; 
 	char seed[BUFFER_SIZE];
-	printf("Input plain text (max 31 chars): ");
-	if (fgets(arr, sizeof(arr), stdin) == NULL){
+	char keystream_buff[BUFFER_SIZE];
+
+	printf("Input plain text (max %d chars): ", BUFFER_SIZE);
+	if (fgets(text, sizeof(text), stdin) == NULL){
 		printf("ERROR READING TEXT");
 		return 1;
 	}
-	printf("Input key (max 31 chars): ");
+	// remove \n from text and seed
+	text[strcspn(text, "\n")] = '\0';
+	seed[strcspn(text, "\n")] = '\0';
+	printf("Input key (max %d chars): ", BUFFER_SIZE);
 	if (fgets(seed, sizeof(seed), stdin) == NULL){
 		printf("ERROR READING SEED");
 		return 1;
 	}
 
-	size_t length = sizeof(arr) / sizeof(arr[0]);
-	char* key = keystream(convert_seed(seed), length); // hard typed for now
-	char* encrypted = encrypt_text(arr, key, length);
-	char* decrypted = decrypt_text(encrypted, key, length);
-	printf("Text: %s\n", arr);
-	printf("Keystream: %s\n", key);
-	printf("Encrypted: %s\n", encrypted);
-	printf("Decrypted: %s\n", decrypted);
+	size_t length = strlen(text);
+	keystream(convert_seed(seed), keystream_buff, length);
+	
+	printf("Text: %s\n", text);
+	printf("Keystream: ");
+	print_weird_chars(keystream_buff, length);
+	encrypt_text(text, keystream_buff, length);
+	printf("Encrypted: ");
+	print_weird_chars(text, length);
 
-	free(key);
-	free(encrypted);
-	free(decrypted);
+	decrypt_text(text, keystream_buff, length);
+	printf("Decrypted: %s\n", text);
+
 	return 0;
 }
 
@@ -47,15 +56,11 @@ Deterministic keystream generation
 @param seed Seed input
 @param length Text length
 */
-char* keystream(unsigned int seed, size_t length){
+void keystream(unsigned int seed, char* key, size_t length){
 	// srand(time(NULL)); needs time.h to work
 	srand(seed);
-	char* stream = (char*)malloc(length + 1); // null terminator
-	for(size_t i = 0; i <= length; ++i){
-		stream[i] = rand() % 256; 
-	}
-	stream[length + 1] = '\0';
-	return stream;
+	for(size_t i = 0; i < length; ++i)
+		key[i] = rand() % 256;
 }
 
 /*
@@ -64,12 +69,9 @@ Encrypts a text using a keystream
 @param key Keystream to encrypt text
 @param text_size The length of the text (not in bytes, but indices)
 */
-char* encrypt_text(char* text, char* key,  size_t text_size){
-	char* encrypted_text = (char*)malloc(text_size+1);
-	for(size_t i = 0; i <= text_size; ++i) {
-		encrypted_text[i] = (text[i] ^ key[i]); 
-	}
-	return encrypted_text;
+void encrypt_text(char* text, char* key,  size_t text_size){
+	for(size_t i = 0; i < text_size; ++i)
+		text[i] = (text[i] ^ key[i]); 
 }
 
 /*
@@ -78,12 +80,19 @@ Decrypts a text using the same keystream as it was encrypted
 @param key Keystream to decrypt the text with
 @param text_size The length of the cipher (not in bytes, but indices)
 */
-char* decrypt_text(char* text, char* key, size_t text_size){
-	char* decrypt_text = (char*)malloc(text_size+1);
-	for(size_t i = 0; i <= text_size; ++i){
-		decrypt_text[i] = (text[i] ^ key[i]);
-	}
-	return decrypt_text;
+void decrypt_text(char* text, char* key, size_t text_size){
+	for(size_t i = 0; i < text_size; ++i)
+		text[i] = (text[i] ^ key[i]);
+}
+
+/*
+Prints cipher or unprintable chars or weird chars
+@param text Text to print
+@param size The length of the text
+*/
+void print_weird_chars(char* text, size_t size){
+	for(size_t i = 0; i<size; ++i) printf("%02x ", text[i]); // print as hexadecimal
+	printf("\n");
 }
 
 /*
@@ -92,9 +101,8 @@ Converts a string seed into a unsigned int
 */
 unsigned int convert_seed(char* seed){
 	unsigned int result = 0;
-	size_t length = sizeof(seed)/sizeof(seed[0]);
-	for(size_t i = 0; i <= length; ++i){
-		result += seed[i];
-	}
+	size_t length = strlen(seed);
+	for(size_t i = 0; i <= length; ++i)
+		result += (unsigned int)seed[i];
 	return result;
 }
