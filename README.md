@@ -31,7 +31,7 @@ Algoritmos a implementar:
 - Vigenere
 - Análisis de frecuencia
 
-## Ejercico de criptografía
+### Ejercico de criptografía
 [Ejercio Criptografía Parte 1](./cryptography/research.md)
 Realizar la investigación de un cifrado a su elección del contenido "historia de criptografia".
 
@@ -47,8 +47,15 @@ Realizar la investigación de un cifrado a su elección del contenido "historia 
 - Realizar la creación de un script que permita aplicar XOR a un BINARIO
 
 
-## Ejercicio de criptografía - keys
+### Ejercicio de criptografía - keys
 [Ejercicio Keys](./crypto_keys/)
 - Realizar la creación de un script que permita generar llaves dinámicas (utilizar ASCII)
 - Realizar la creación de un script que generar un nuevo cypher en ASCII con una llave k de tamaño fijo 
 - Realizar la creación de un script que generar un nuevo cypher en ASCII con una llave k de tamaño dinámico
+
+## Stream Ciphers
+
+Implementación de algoritmos de stream para cifrado de un texto plano.
+
+## Documentación
+[Stream Ciphers](./stream_cyphers/README.md)
