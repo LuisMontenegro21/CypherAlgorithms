@@ -12,7 +12,7 @@ Para ejecutar: <br>
 ## Parte 1: Implementación de stream cipher
 
 ### 1.1 Generación del keystream
-Para ver el [códigofuente](./stream_cyphers/keystream.c)
+Para ver el [códigofuente](./keystream.c)
 
 Función generadora del keystream:
 ```
