@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BUFFER_SIZE 32
+#define BUFFER_SIZE 128 // fixed for commodity
 
 void encrypt_text(char* text, char* key, size_t text_size);
 
@@ -27,12 +27,13 @@ int main(){
 	}
 	// remove \n from text and seed
 	text[strcspn(text, "\n")] = '\0';
-	seed[strcspn(text, "\n")] = '\0';
+	
 	printf("Input key (max %d chars): ", BUFFER_SIZE);
 	if (fgets(seed, sizeof(seed), stdin) == NULL){
 		printf("ERROR READING SEED");
 		return 1;
 	}
+	seed[strcspn(text, "\n")] = '\0';
 
 	size_t length = strlen(text);
 	keystream(convert_seed(seed), keystream_buff, length);
@@ -91,7 +92,7 @@ Prints cipher or unprintable chars or weird chars
 @param size The length of the text
 */
 void print_weird_chars(char* text, size_t size){
-	for(size_t i = 0; i<size; ++i) printf("%02x ", text[i]); // print as hexadecimal
+	for(size_t i = 0; i<size; ++i) printf("%02hhx ", text[i]); // print as hexadecimal
 	printf("\n");
 }
 
