@@ -1,18 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#define BUFFER_SIZE 128 // fixed for commodity
-
-void encrypt_text(char* text, char* key, size_t text_size);
-
-void decrypt_text(char* text, char* key, size_t text_size);
-
-void keystream(unsigned int seed, char* key, size_t length);
-
-void print_weird_chars(char* text, size_t length);
-
-unsigned int convert_seed(char* seed);
+#include "keystream.h"
 
 
 int main(){ 
@@ -25,7 +14,7 @@ int main(){
 		printf("ERROR READING TEXT");
 		return 1;
 	}
-	// remove \n from text and seed
+	// remove \n from text
 	text[strcspn(text, "\n")] = '\0';
 	
 	printf("Input key (max %d chars): ", BUFFER_SIZE);
@@ -33,6 +22,7 @@ int main(){
 		printf("ERROR READING SEED");
 		return 1;
 	}
+	// remove \n from seed
 	seed[strcspn(text, "\n")] = '\0';
 
 	size_t length = strlen(text);
@@ -40,10 +30,10 @@ int main(){
 	
 	printf("Text: %s\n", text);
 	printf("Keystream: ");
-	print_weird_chars(keystream_buff, length);
+	print_special_chars(keystream_buff, length);
 	encrypt_text(text, keystream_buff, length);
 	printf("Encrypted: ");
-	print_weird_chars(text, length);
+	print_special_chars(text, length);
 
 	decrypt_text(text, keystream_buff, length);
 	printf("Decrypted: %s\n", text);
@@ -58,7 +48,6 @@ Deterministic keystream generation
 @param length Text length
 */
 void keystream(unsigned int seed, char* key, size_t length){
-	// srand(time(NULL)); needs time.h to work
 	srand(seed);
 	for(size_t i = 0; i < length; ++i)
 		key[i] = rand() % 256;
@@ -87,11 +76,11 @@ void decrypt_text(char* text, char* key, size_t text_size){
 }
 
 /*
-Prints cipher or unprintable chars or weird chars
+Prints cipher or unprintable chars or weird chars as hexadecimal
 @param text Text to print
 @param size The length of the text
 */
-void print_weird_chars(char* text, size_t size){
+void print_special_chars(char* text, size_t size){
 	for(size_t i = 0; i<size; ++i) printf("%02hhx ", text[i]); // print as hexadecimal
 	printf("\n");
 }

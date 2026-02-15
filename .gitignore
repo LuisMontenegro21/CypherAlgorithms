@@ -211,6 +211,9 @@ __marimo__/
 # Compiled object files
 *.o
 
+# Assembly files
+*.s
+
 # Precompiled Headers
 *.gch
 

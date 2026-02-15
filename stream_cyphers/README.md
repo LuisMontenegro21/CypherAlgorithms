@@ -4,10 +4,16 @@
 Este proyecto consiste en la generación de streamkeys.
 
 ## Instrucciones de uso
-Para compilación utilizando gcc:<br>
+Para compilación del programa princial utilizando gcc:<br>
 `gcc keystream.c -o keystream` <br>
 Para ejecutar: <br>
-`.\keystream`
+`.\keystream`<br>
+
+Para ejecución de las pruebas:<br>
+`gcc testing.c -o testing`<br>
+Para ejecutar: <br>
+`.\testing`
+
 
 ## Parte 1: Implementación de stream cipher
 
@@ -70,12 +76,47 @@ La longitud del mensaje del keystream en este caso debe ser equivalente al mensa
 Ejemplos de ejecución:<br>
 
 Primer ejemplo: <br>
+```
+Input plain text (max 128 chars): hola mundo
+Input key (max 128 chars): conveniente
+Text: hola mundo
+Keystream: fff0 fffa 37 ff9f 7e 50 7d 3d ff97 67
+Encrypted: ff98 ff95 5b fffe 5e 3d 08 53 fff3 08
+Decrypted: hola mundo
+```
 
 Segundo ejemplo: <br>
+```
+Input plain text (max 128 chars): este es un test de prueba
+Input key (max 128 chars): 32
+Text: este es un test de prueba
+Keystream: ff91 ff98 ffc1 38 ffed ffb0 37 ffde 25 ffd0 ffbc ffde ffbe 7b ff9b ffe1 0e ffbd 7e 7e ffa1 03 ffed ffae ffdc
+Encrypted: fff4 ffeb ffb5 5d ffcd ffd5 44 fffe 50 ffbe ff9c ffaa ffdb 08 ffef ffc1 6a ffd8 5e 0e ffd3 76 ff88 ffcc ffbd
+Decrypted: este es un test de prueba
+```
 
 Tercer ejemplo: <br>
+```
+Input plain text (max 128 chars): probando con caraceres diferentes _?
+Input key (max 128 chars): __
+Text: probando con caraceres diferentes _?
+Keystream: ffb3 58 58 fffb ffda ffd7 47 2e ff80 66 50 2e 75 ffea ffda ff93 7f 62 fff4 fffe 4d 0e ffed 5a ffac ffd7 1e 61 fffe ffeb 0b 62 ffe7 ffa8 ffab 42
+Encrypted: ffc3 2a 37 ff99 ffbb ffb9 23 41 ffa0 05 3f 40 55 ff89 ffbb ffe1 1e 01 ff91 ff8c 28 7d ffcd 3e ffc5 ffb1 7b 13 ff9b ff85 7f 07 ff94 ff88 fff4 7d
+Decrypted: probando con caraceres diferentes _?
+```
 
 ### 3.2 Pruebas unitarias
+Para correr las pruebas unitarias se debe compilar el archivo `testing.c`. <br>
+* El descifrado recupera exactamente el mensaje original
+`gcc -DSAME_OUTPUT testing.c -o testing`<br>
+` .\testing`
+* Diferentes claves producen diferentes textos cifrados
+`gcc -DDIFFERENT_OUTPUT testing.c -o testing`<br>
+` .\testing`
+* La misma clave produce el mismo texto cifrado
+`gcc -DSAME_KEY testing.c -o testing`<br>
+` .\testing`
+* El cifrado maneja correctamente mensajes de diferentes longitudes
 
 ## Parte 4: Reflexión técnica
 
