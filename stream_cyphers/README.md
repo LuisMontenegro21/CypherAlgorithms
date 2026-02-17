@@ -138,5 +138,5 @@ También se llena el bloque con una constante. Esta constante sirve para reducir
 4. Fuentes
 
 ### Fuentes 
-[1] _ParejAbertzale, Algoritmo de Cifrado ChaCha20, Medium (2023) [https://medium.com/@parejaemi/algoritmo-de-cifrado-chacha20-119a6d7c19a7]_ 
+[1] _ParejAbertzale, Algoritmo de Cifrado ChaCha20, Medium (2023) [https://medium.com/@parejaemi/algoritmo-de-cifrado-chacha20-119a6d7c19a7]_ <br>
 [2] _Thomas Ptacek, The Design of ChaCha20 (2017) [https://loup-vaillant.fr/tutorials/chacha20-design]_
