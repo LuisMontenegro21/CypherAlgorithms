@@ -126,8 +126,17 @@ Para correr las pruebas unitarias se debe compilar el archivo `testing.c`. <br>
 
 ### 4.2 Comparación con stream ciphers modernos
 1. Mejoras del ChaCha frente a la generación de mi keystream.
+El ChaCha20, por ejemplo, toma varios pasos extras que un stream cipher como el mío no toma. El ChaCha20, tiene por nombre 20, ya que realiza 20 rondas de operaciones de suma y de xor para generar aleatoriedad y revolver bien los valores. Esto lo hace tomando el texto como una matriz y aplicando las operaciones en vertical y diagonal. Este proceso se repite en bloques de 64 bytes utilizando un contador y un nonce para cada bloque, de esta forma asegurando que cada bloque sea completamente diferente del otro. [1][2]
 2. Evitar vulnerabilidades de PRNG básicos.
+El ChaCha20 intenta mejorar la capacidad de aleatoriedad y determinismo que tiene un PRNG básico. Es decir, busca que sea casi imposible hacerle la inversa a las transformaciones que se hizo si no es mediante el uso de la misma stream cipher key. 
 3. Manejo de inicialización y estado interno.
+El ChaCha20, como se dijo antes, utiliza un estado de rotación para generar aleatoriedad en grupos de 512 bits, mezclando 4 de 32 bits (un cuarto de bloque).
+Sin embargo, solamente revolver y hacer esta transformación a cada parte aún es reversible. Por lo que lo que se hace es adherir el bloque revuelto con el
+bloque original. De esta forma se intenta garantizar que sea más difícil revertirlo considerando que el atacante dezconoce la mitad del bloque.
+También se llena el bloque con una constante. Esta constante sirve para reducir la cantidad de control que tiene un atacante sobre un input. [2]
+
 4. Fuentes
 
 ### Fuentes 
+[1] _ParejAbertzale, Algoritmo de Cifrado ChaCha20, Medium (2023) [https://medium.com/@parejaemi/algoritmo-de-cifrado-chacha20-119a6d7c19a7]_ 
+[2] _Thomas Ptacek, The Design of ChaCha20 (2017) [https://loup-vaillant.fr/tutorials/chacha20-design]_
