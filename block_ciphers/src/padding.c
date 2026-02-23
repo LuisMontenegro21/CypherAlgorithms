@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
+// padding for size 8
 uint8_t* pkcs7_padding(const uint8_t* bytes, size_t length, uint8_t blocksize, size_t* new_len) {
 
     uint8_t padding = blocksize - (length % blocksize);
@@ -19,12 +20,13 @@ uint8_t* pkcs7_padding(const uint8_t* bytes, size_t length, uint8_t blocksize, s
     }
 
     memcpy(result, bytes, length);
-
-    for (size_t i = length; i < *new_len; i++) {
+    // printf("New len: %zu\n", *new_len);
+    for (size_t i = length; i < *new_len; ++i) {
+        // printf("Iteration: %zu Padding: %u\n", i, (unsigned int)padding);
         result[i] = padding;
     }
 
-    return (char*)result;
+    return result;
 }
 
 
@@ -49,6 +51,7 @@ int pkcs7_unpadding(uint8_t* buffer, size_t* length, uint8_t blocksize) {
     return 0;
 }
 
-uint8_t free_padding_pkc7s(uint8_t* padded){
+void free_padding_pkc7s(uint8_t* padded){
+    printf("Freeing memory");
 	free(padded);
 }

@@ -9,7 +9,7 @@ uint8_t* pkcs7_padding(const uint8_t* bytes, size_t length, uint8_t blocksize, s
 
 int pkcs7_unpadding(uint8_t* buffer, size_t* length, uint8_t blocksize);
 
-uint8_t free_padding_pkc7s(uint8_t* padded);
+void free_padding_pkc7s(uint8_t* padded);
 
 
 
