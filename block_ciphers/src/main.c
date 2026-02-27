@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "padding.h"
-// #include "keys.h"
+#include "enc3des.h"
+#include "keys.h"
 
 
 void print_hexadecimal(uint8_t* msg, size_t length){
@@ -10,19 +11,21 @@ void print_hexadecimal(uint8_t* msg, size_t length){
 }
 
 int main(){
-    uint8_t msg[] = "Hello";
-    size_t len = strlen((char*)msg);
-
-    size_t padded_len;
-    uint8_t *padded = (uint8_t*)pkcs7_padding(msg, len, 8, &padded_len);
-
-    printf("original len: %zu\n", len);
-    printf("padded len:   %zu\n", padded_len);
-    print_hexadecimal(padded, padded_len); // print padded
-    if (pkcs7_unpadding(padded, &padded_len, 8) != 0){
-        perror("Error unpadding");
+    uint8_t key[24];
+    uint8_t iv[8];
+    if (des3_keygen(key, strlen(key))){
+        perror("Error");
         exit(-1);
     }
-    print_hexadecimal(padded, padded_len); // print unpadded
-    free_padding_pkc7s(padded);
+
+    uint8_t plaintext[] = "Testing 3DES CBC mode";
+    uint8_t ciphertext[128];
+    uint8_t decrypted[128];
+    int ct_len = encrypt_3des_cbc(plaintext, strlen(plaintext), key, iv, ciphertext);
+    print_hexadecimal(ciphertext, (size_t)ct_len);
+    int pt_len = decrypt_3des_cbc(ciphertext, (size_t)ct_len, key, iv, decrypted);
+    decrypted[pt_len] = '\0';
+    printf("\nDecrypted: %s \n" , decrypted);
+
+    return 0;
 }

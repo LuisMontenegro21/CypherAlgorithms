@@ -1,17 +1,8 @@
 #include <stdint.h>
 #include <stdlib.h>
-#include <sys/random.h>
 #include "keys.h"
-
-#ifdef _WIN32
-#include <windows.h>
-#include <bcrypt.h>
-#pragma comment(lib, "bcrypt.lib")
-
-int os_random(uint8_t *out, size_t n) {
-    return BCryptGenRandom(NULL, out, (ULONG)n, BCRYPT_USE_SYSTEM_PREFERRED_RNG) == 0 ? 0 : -1;
-}
-#endif
+#include <errno.h>
+#include <sys/random.h>
 
 int os_random(uint8_t *out, size_t n) {
     size_t got = 0;
@@ -25,6 +16,7 @@ int os_random(uint8_t *out, size_t n) {
     }
     return 0;
 }
+
 
 int aes_keygen(uint8_t *key, size_t key_len) {
     if (key_len != 16 && key_len != 24 && key_len != 32) return -1;
