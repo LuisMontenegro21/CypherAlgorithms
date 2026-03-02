@@ -1,8 +1,10 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "keys.h"
 #include <errno.h>
 #include <sys/random.h>
+
 
 int os_random(uint8_t *out, size_t n) {
     size_t got = 0;
@@ -10,6 +12,7 @@ int os_random(uint8_t *out, size_t n) {
         ssize_t r = getrandom(out + got, n - got, 0);
         if (r < 0) {
             if (errno == EINTR) continue;
+            printf("Error in OS Random\n");
             return -1;
         }
         got += (size_t)r;
@@ -19,7 +22,10 @@ int os_random(uint8_t *out, size_t n) {
 
 
 int aes_keygen(uint8_t *key, size_t key_len) {
-    if (key_len != 16 && key_len != 24 && key_len != 32) return -1;
+    if (key_len != 16 && key_len != 24 && key_len != 32) {
+        printf("Error in random aeskeygen");
+        return -1;
+    }
     return os_random(key, key_len);
 }
 
@@ -35,14 +41,23 @@ static uint8_t des_odd_parity(uint8_t b) {
 }
 
 int des_keygen(uint8_t key[8]) {
-    if (os_random(key, 8) != 0) return -1;
+    if (os_random(key, 8) != 0) {
+        printf("Error in random deskeygen");
+        return -1;
+    }
     for (int i = 0; i < 8; ++i) key[i] = des_odd_parity(key[i]);
     return 0;
 }
 
 int des3_keygen(uint8_t *key, size_t key_len) {
-    if (key_len != 16 && key_len != 24) return -1;
-    if (os_random(key, key_len) != 0) return -1;
+    if (key_len != 16 && key_len != 24) {
+        printf("Error in key_len: 16 or 24 bytes expected '%zu' found\n", key_len);
+        return -1;
+    }
+    if (os_random(key, key_len) != 0) {
+        printf("Error in random des3keygen\n");
+        return -1;
+    }
 
     // Fix odd parity for each DES key byte
     for (size_t i = 0; i < key_len; ++i) key[i] = des_odd_parity(key[i]);
