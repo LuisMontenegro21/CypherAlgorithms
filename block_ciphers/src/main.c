@@ -1,44 +1,36 @@
 #include <stdio.h>
 #include <string.h>
-#include "enc3des.h"
-#include "encdes.h"
-#include "keys.h"
+#include <stdint.h>
+// #include "enc3des.h"
+// #include "encdes.h"
+// #include "keys.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
 
 void print_hexadecimal(uint8_t* msg, size_t length){
     for (size_t i = 0; i<length; ++i) printf("%02hhx ", msg[i]);
     printf("\n");
 }
 
+void cipher_img(unsigned char* img, size_t img_len, unsigned char* encrypted_img, size_t encrypted_img_len){
+    
+}
+
 int main(){
-    // uint8_t key[24];
-    // uint8_t iv[8];
 
-    // int res = des3_keygen(key, sizeof(key));
-    // if (res != 0){
-    //     printf("Response: %d\n", res);
-    //     perror("Error");
-    //     exit(-1);
-    // }
-
-    // uint8_t plaintext[] = "Testing DES ECB mode";
-    // uint8_t ciphertext[128];
-    // uint8_t decrypted[128];
-    // int ct_len = encrypt_3des_cbc(plaintext, strlen(plaintext), key, iv, ciphertext);
-    // print_hexadecimal(ciphertext, (size_t)ct_len);
-    // int pt_len = decrypt_3des_cbc(ciphertext, (size_t)ct_len, key, iv, decrypted);
-    // decrypted[pt_len] = '\0';
-    // size_t decrypted_length = strlen(decrypted);
-    // printf("\nDecrypted: %s Length: %zu\n" , decrypted, decrypted_length);
-    uint8_t key[8];
-    uint8_t plaintext[] = "Testing DES ECB mode";
-    uint8_t ciphertext[128];
-    uint8_t decrypted[128];
-    int size = (int)strlen(plaintext);
-    des_keygen(key);
-    int padding = encrypt_des_ecb(plaintext, key, ciphertext, &size);
-    print_hexadecimal(ciphertext, sizeof(ciphertext));
-    int original_len = decrypt_des_ecb(ciphertext, key, decrypted, &size);
-
-
+    int width, height, channels;
+    unsigned char* image_data = stbi_load("tux.png", &width, &height, &channels, 0);
+    if (image_data == NULL){
+        printf("Error loading image\n");
+        return 1;
+    }
+    size_t img_size = width * height * channels;
+    
+    printf("Image loaded Dimensions: %d x %d , Channels: %d\n", width, height, channels);
+    stbi_image_free(image_data);
     return 0;
 }
