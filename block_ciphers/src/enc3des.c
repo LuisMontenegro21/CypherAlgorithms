@@ -2,7 +2,7 @@
 #include <openssl/evp.h>
 
 
-int encrypt_3des_cbc(uint8_t* plaintext, size_t plaintext_len, uint8_t* key, uint8_t* iv, uint8_t* ciphertext){
+int encrypt_3des_cbc(unsigned char* plaintext, size_t plaintext_len, unsigned char* key, unsigned char* iv, unsigned char* ciphertext){
     EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
     int len, ciphertext_len;
     // cast to uint_8 -> unsigned char 
@@ -17,7 +17,7 @@ int encrypt_3des_cbc(uint8_t* plaintext, size_t plaintext_len, uint8_t* key, uin
     EVP_CIPHER_CTX_free(ctx);
     return ciphertext_len;
 }
-int decrypt_3des_cbc(uint8_t* ciphertext, size_t ciphertext_len, uint8_t* key, uint8_t* iv, uint8_t* plaintext){
+int decrypt_3des_cbc(unsigned char* ciphertext, size_t ciphertext_len, unsigned char* key, unsigned char* iv, unsigned char* plaintext){
     EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
     int len, plaintext_len;
     EVP_DecryptInit_ex(ctx, EVP_des_ede3_cbc(), NULL, key, iv);

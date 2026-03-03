@@ -1,16 +1,15 @@
 #ifndef KEYS_H
 #define KEYS_H
-#include <stdint.h>
 #include <stdlib.h>
 
-int os_random(uint8_t *out, size_t n);
+int os_random(unsigned char *out, size_t n);
 
-int aes_keygen(uint8_t *key, size_t key_len);
+int aes_keygen(unsigned char *key, size_t key_len);
 
-static uint8_t des_odd_parity(uint8_t b);
+static unsigned char des_odd_parity(unsigned char b);
 
-int des_keygen(uint8_t key[8]);
+int des_keygen(unsigned char key[8]);
 
-int des3_keygen(uint8_t *key, size_t key_len);
+int des3_keygen(unsigned char *key, size_t key_len);
 
 #endif

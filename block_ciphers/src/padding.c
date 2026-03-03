@@ -1,19 +1,18 @@
 #include "padding.h"
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 // padding for size 8
-uint8_t* pkcs7_padding(const uint8_t* bytes, size_t length, uint8_t blocksize, size_t* new_len) {
+unsigned char* pkcs7_padding(const unsigned char* bytes, size_t length, unsigned char blocksize, size_t* new_len) {
 
-    uint8_t padding = blocksize - (length % blocksize);
+    unsigned char padding = blocksize - (length % blocksize);
     if (padding == 0)
         padding = blocksize;
 
     *new_len = length + padding;
 
-    uint8_t* result = malloc(*new_len);
+    unsigned char* result = malloc(*new_len);
     if (!result) {
         perror("malloc");
         exit(EXIT_FAILURE);
@@ -30,12 +29,12 @@ uint8_t* pkcs7_padding(const uint8_t* bytes, size_t length, uint8_t blocksize, s
 }
 
 
-int pkcs7_unpadding(uint8_t* buffer, size_t* length, uint8_t blocksize) {
+int pkcs7_unpadding(unsigned char* buffer, size_t* length, unsigned char blocksize) {
 
     if (*length == 0)
         return -1;
 
-    uint8_t pad = buffer[*length - 1];
+    unsigned char pad = buffer[*length - 1];
 
     if (pad == 0 || pad > blocksize) return -1;
 
@@ -51,7 +50,7 @@ int pkcs7_unpadding(uint8_t* buffer, size_t* length, uint8_t blocksize) {
     return 0;
 }
 
-void free_padding_pkc7s(uint8_t* padded){
+void free_padding_pkc7s(unsigned char* padded){
     printf("Freeing memory");
 	free(padded);
 }
