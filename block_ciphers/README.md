@@ -9,19 +9,37 @@ Compilar AES 256 CBC:<br>
 ```
 gcc -std=c17 -Wall -pedantic -DAES -DCBC main.c keys.c aes.c -o main -lcrypto -lssl -lm
 ```
+Uso: <br>
+```
+./main <path/original.png> <path/encrypt.png>
+```
 
 Compilar AES 256 ECB:<br>
 ```
 gcc -std=c17 -Wall -pedantic -DAES -DECB main.c keys.c aes.c -o main -lcrypto -lssl -lm
 ```
+Uso: <br>
+```
+./main <path/original.png> <path/encrypt.png>
+```
 
 Compilar 3DES: <br>
 ```
-gcc -DDES3
+gcc -DDES3 -DTEXT main.c keys.c enc3des.c -o main -lcrypto -lssl
+```
+Uso: <br>
+```
+./main 3des.txt
 ```
 
 Compilar DES: <br>
-
+```
+gcc -DDES -DTEXT main.c keys.c encdes.c -o main -lcrypto -lssl
+```
+Uso: <br>
+```
+./main des.txt
+```
 ## Respuestas
 
 ### 2.1
@@ -51,9 +69,9 @@ Sí se puede ver la diferencia ya que con el CBC se nota lo más similar a ruido
 se ve más como un relieve o patrones a lo largo de la imagen lo cual deja ver aún su diseño. <br>
 
 *Imágenes*
-![Original](block_ciphers/src/tux.png "Original")
-![AES_256_ECB](block_ciphers/src/tux_aes_ecb.png "ECB")
-![AES_256_CBC](block_ciphers/src/tux_aes_cbc.png "CBC")
+![Original](block_ciphers/src/tux.png)
+![AES_256_ECB](block_ciphers/src/tux_aes_ecb.png)
+![AES_256_CBC](block_ciphers/src/tux_aes_cbc.png)
 
 ### 2.3
 *Pregunta* ¿Por qué no debemos usar ECB en datos sensibles?<br>
