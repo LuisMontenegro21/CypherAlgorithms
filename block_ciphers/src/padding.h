@@ -1,9 +1,6 @@
 #ifndef PADDING_H
 #define PADDING_H
-
-
-#include <stdlib.h>
-#include <stdio.h>
+#include <stddef.h>
 
 unsigned char* pkcs7_padding(const unsigned char* bytes, size_t length, unsigned char blocksize, size_t* new_len);
 

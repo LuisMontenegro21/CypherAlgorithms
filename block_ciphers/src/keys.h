@@ -1,6 +1,6 @@
 #ifndef KEYS_H
 #define KEYS_H
-#include <stdlib.h>
+#include <stddef.h>
 
 int os_random(unsigned char *out, size_t n);
 

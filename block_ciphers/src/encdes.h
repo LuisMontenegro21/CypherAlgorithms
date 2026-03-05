@@ -1,9 +1,9 @@
 #ifndef ENCDES_H
 #define ENCDES_H
-#include <stdint.h>
+#include <stddef.h>
 
-int encrypt_des_ecb(uint8_t* plaintext, size_t plaintext_len,  uint8_t* key, uint8_t* ciphertext, int* size);
-int decrypt_des_ecb(uint8_t* ciphertext, uint8_t* key, uint8_t* plaintext, int* size);
+int encrypt_des_ecb(unsigned char* plaintext, size_t plaintext_len,  unsigned char* key, unsigned char* ciphertext);
+int decrypt_des_ecb(unsigned char* ciphertext, size_t ciphertext_len ,unsigned char* key, unsigned char* plaintext);
 
 
 #endif
