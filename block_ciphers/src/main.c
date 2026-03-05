@@ -2,9 +2,9 @@
 #include <string.h>
 #include "keys.h"
 
-#ifdef DES3
+//#ifdef DES3
 #include "enc3des.h"
-#endif
+//#endif
 
 #ifdef DES
 #include "encdes.h"
@@ -20,13 +20,50 @@
 
 
 // unsigned char* msg size_t length
-#define print_hexadecimal(msg, length)(for (size_t i = 0; i<length; ++i) \
-    printf("%02hhx ", msg[i]); \
-    printf("\n"); )
+void print_hexadecimal(unsigned char *msg, size_t length){
+    for (size_t i = 0; i<length; ++i) {
+        printf("%02hhx ", msg[i]); 
+    }
+    printf("\n");
+}
 
 
+int main(int argc, char **argv){
+    if (argc < 2){
+        printf("Usage: %s <filename.txt>", argv[0]);
+        return 1;
+    }
 
-int main(){
+    FILE *fptr = fopen(argv[1], "r");
+    if (fptr == NULL){
+        perror("Error openning file");
+        return 1;
+    }
+    char content[100];
+    char cipher[100];
+    char original[100];
+    //#ifdef DES3
+    char key[24];
+    char iv[8];
+    des3_keygen(key, 24);
+    if (fgets(content, sizeof(content), fptr)) encrypt_3des_cbc(content, 100, key, iv, cipher);
+    decrypt_3des_cbc(cipher, 100, key, iv, original);
+    printf("Original: %s\n", original);
+    //#endif
+
+    #ifdef DES
+    char key[8];
+    des_keygen(key);
+    if (fgets(content, sizeof(content), fptr)) encrypt_des_ecb(content, 100, key, cipher);
+    print_hexadecimal(cipher, 100);
+    decrypt_des_ecb(cipher, 100, key, original);
+    printf("Original: %s\n", original);
+    #endif
+    
+    
+
+    
+
     #ifdef AES
     int width, height, channels;
     unsigned char* image_data = stbi_load("tux.png", &width, &height, &channels, 0);
@@ -56,7 +93,7 @@ int main(){
 
     #ifdef ECB
     int siz = encrypt_aes_ecb(image_data, encrypt_size, key, encrypted); 
-    stbi_write_png("tux_aes_ebc.png", width, height, channels, encrypted, width*channels);
+    stbi_write_png("tux_aes_ecb.png", width, height, channels, encrypted, width*channels);
     printf("Image loaded with size: %d\n", siz);
     #endif
     
