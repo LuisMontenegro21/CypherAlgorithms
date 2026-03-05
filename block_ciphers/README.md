@@ -69,9 +69,9 @@ Sí se puede ver la diferencia ya que con el CBC se nota lo más similar a ruido
 se ve más como un relieve o patrones a lo largo de la imagen lo cual deja ver aún su diseño. <br>
 
 *Imágenes*
-![Original](block_ciphers/src/tux.png)
-![AES_256_ECB](block_ciphers/src/tux_aes_ecb.png)
-![AES_256_CBC](block_ciphers/src/tux_aes_cbc.png)
+![Original](src/tux.png)
+![AES_256_ECB](src/tux_aes_ecb.png)
+![AES_256_CBC](src/tux_aes_cbc.png)
 
 ### 2.3
 *Pregunta* ¿Por qué no debemos usar ECB en datos sensibles?<br>
