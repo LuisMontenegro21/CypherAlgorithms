@@ -25,6 +25,7 @@ int decrypt_3des_cbc(unsigned char* ciphertext, size_t ciphertext_len, unsigned 
     plaintext_len = len;
     // plaintext + len moves the pointer the size of plaintext
     EVP_DecryptFinal_ex(ctx, plaintext + len, &len);
+    plaintext_len += len;
     EVP_CIPHER_CTX_free(ctx);
     return plaintext_len;
 }

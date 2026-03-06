@@ -1,4 +1,5 @@
 # Block Ciphers
+Créditos a Sean Barrett (github nothings) por la libería std para manejar imágenes.
 
 ### Requerimientos
 Tener WSL instalado si se utiliza Windows 10/11 o alguna distribución que soporte OpenSSL y tenga GNU GCC en caso sea Unix. 
@@ -29,16 +30,21 @@ gcc -DDES3 -DTEXT main.c keys.c enc3des.c -o main -lcrypto -lssl
 ```
 Uso: <br>
 ```
-./main 3des.txt
+./main ../tests/3des.txt
 ```
 
 Compilar DES: <br>
 ```
-gcc -DDES -DTEXT main.c keys.c encdes.c -o main -lcrypto -lssl
+gcc -DDES -DTEXT -DPADDING main.c keys.c encdes.c paddinc.c -o main -lcrypto -lssl
 ```
 Uso: <br>
 ```
-./main des.txt
+./main ../tests/des.txt
+```
+
+Compilar para padding:
+```
+gcc -DPADDING main.c padding.c -o main
 ```
 ## Respuestas
 
@@ -80,9 +86,15 @@ si el cifrado es suficientemente largo se puede comenzar a ver patrones y esto p
 
 Bloque cifrado con ECB<br>
 ```
+06 49 aa dd e0 68 61 bf e8 9f ea b1 93 3e f2 a5 76 85 4c 1d 68 2f 66 92 0d 85 59 7a fe 84 a4 3c 50 5f 1b 91 ad d0 2b a8 37 77 38 53 33 e3 06 56 cf df e7 22 55 84 32 55 44 92 a3 70 e1 55 5f aa 36 80 90 e9 7a a1 b1 0e 58 dd 3e 26 c5 ea d9 29 3b dd 0d b6 27 cd 0d ac 3c ee 97 c2 8a 05 36 eb f5 60 ef 77 81 56 c8 6f 0f 8f 2f 13 d8 6e 1e 7b e7 4c 69 84 70 7c 3a f5 6f 06 dd a0 1e 59 8c c6 15 83 fe f5 e4 c6 7f 39 32 bb 27 6a da 74 51 d4 e8 78 93 bf 26 e4 91 99 ab f4 e3 98 c9 14 51 39 
+0c 44 00 df 80 30 f3 92 69 fe b3 7b e6 ef 81 a9 90 ea 6e bb e1 fc 98 19 e2 74 a6 3b 83 18 da 4e 6b f4 c4 7e c8 0f 8f e3 94 e8 6f bf 01 f6 68 47 3f ed 94 0c b3 46 ce cb a3 ca 21 26 c5 4b f6 a6 10 83 47 9c c4 61 82 e5 3a c7 a5 5f f6 c3 00 65 04 39 1d 3e cb df 9e 10 dd de 9f fa 91 83 f5 d8 56 c1 d1 e5 63 55 34 8d 47 e3 ff b5 9d 93 cd 50 77 4e ba a5 c9 f5 aa e9 3e d1 43 9c 2d 18 fc 69 aa a7 00 85 6b a3 56 1d 8e df ff da a3 c8 ee 8f 63 fd 74 71 4a 93 c1 1b f3 57 68 ff bd e2 54 87 
+cd 5c f5 66 5a c0 85 04 77 77 d0 cb 44 6a aa 1e 0a 8a 42 c8 f9 c1 d3 5a 44 85 13 52 89 f5 9b 9f 93 fd 74 e7 43 f7 58 88 3b 0f e2 c9 63 4b b3 c3 e6 17 36 ca 52 48 58 39 ca 32 ca 39 19 23 cf 4a 34 cb ed 33 b4 ef 4c 66 db 48 d7 61 f5 f0 29 18 01 e4 6e 7c 34 9c 8b 36 a8 1d 60 af 9b aa b0 d4 90 bd 4a a0 78 e8 7d 87 a3 87
 ```
 BLoque cifrado con CBC<br>
 ```
+d4 80 e6 e7 08 c0 97 be e0 5f 05 98 e9 db 9d c3 3e fc 81 d6 a7 0f 84 db 4e db 70 af 93 9d 1a 30 f5 95 3a 4f 16 56 44 1e 0f 6f 63 4b 0d 45 5d cf 1d cb e9 94 7e 8f a0 b7 26 42 ab cf 28 7a e7 ae 1e 36 78 ab 61 9a a4 c3 8e 81 4b 82 14 a9 7e 7e fa 60 1f 3e 87 2e 2c 2f 0b b9 36 19 44 dc 8d c3 41 98 14 b4 60 de 6a eb 37 fa 09 47 aa 29 30 57 48 86 49 a4 90 84 12 0c 92 f0 e6 1c b6 bf d6 1d 9f 83 1d 8b 04 7d 97 f9 5f de e5 09 cd a4 fc 40 be 4f b2 c7 9f 8b 94 86 4d c7 81 df 45 e1 6a 0a 
+2e a0 74 40 1f a2 5a bd a9 4b a0 cd b7 41 5f 03 35 f6 bd 02 e7 2f 91 8c eb f5 78 6b 9e 77 72 e2 cf 6a 17 8a 3f 7c 91 be dc 93 3b 38 f3 34 d1 b6 0f ee d4 01 76 1f 6c 3e d6 11 86 c4 f4 4c e0 31 3e 55 5a 04 bd 59 4c b6 9c a7 b6 1f a6 8e a6 e4 9d 1c 75 ad d1 9a d9 2d dc fa 11 e0 4c 7a 87 79 d3 60 e0 60 1b 8a 9f e8 85 8c 48 8f 4e a8 c8 e0 0a 2f 9b 91 06 f4 39 c5 95 84 85 38 0d 9f 03 a0 b1 ad 24 b5 98 08 74 b2 61 5f ab 43 b6 ed 9c 28 5b a7 9f 09 eb ff 3a 53 c5 cb 12 c1 06 3b a3 3d 
+62 0f 6c b7 cf d7 d9 9c f1 5f 8f 97 5c 43 48 f8 d9 6f c7 76 a0 ae 39 c5 7b 4a 4c 60 5e 98 d4 4b ed 43 47 eb 48 8e a8 80 54 4a f0 83 67 1e f5 0f 63 76 b8 61 4b b8 83 4c f6 e1 0f 7d 0a 4c b2 ec 90 96 e4 24 df 77 cd de 0a 21 31 26 71 df ad 12 3b 0e 7c 5c 50 7b 9a d8 2c 32 f6 d3 65 f9 59 6f c2 5e 60 64 aa c4 5f 44 5a c3
 ```
 
 ### 2.4

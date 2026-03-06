@@ -11,8 +11,14 @@
 #include "encdes.h"
 #endif
 
+#ifdef PADDING
+#include "padding.h"
+#endif
+
+
+
 #ifdef AES
-#include "aes.h"
+#include "aes.h"s
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -29,8 +35,43 @@ void print_hexadecimal(unsigned char *msg, size_t length){
 #endif
 
 
-int main(int argc, char **argv){
 
+int main(int argc, char **argv){
+    #ifdef KEYS
+
+    #endif
+
+    #ifdef PADDING
+    char pad1[5] = "Hola";
+    char pad2[8] = "Palabra";
+    char pad3[10] = "Problemas";
+    size_t new1;
+    size_t new2;
+    size_t new3;
+    unsigned char *p1 = pkcs7_padding(pad1, 5, 8, &new1);
+    unsigned char *p2 = pkcs7_padding(pad2, 8, 8, &new2);
+    unsigned char *p3 = pkcs7_padding(pad3, 10, 8, &new3);
+    if (!p1 || !p2 || !p3){
+        perror("Error allocating");
+        return 1;
+    }
+    printf("Padding 5 bytes: %s length: %zu\n", p1, new1);
+    printf("Padding 8 bytes: %s length: %zu\n", p2, new2);
+    printf("Padding 10 bytes: %s length: %zu\n", p3, new3);
+    int i1 =pkcs7_unpadding(p1, &new1, 8);
+    int i2 = pkcs7_unpadding(p2, &new2, 8);
+    int i3 = pkcs7_unpadding(p3, &new3, 8);
+    if (i1 != 0 || i2 != 0 || i3 != 0){
+        perror("Error unpadding");
+        return 1;
+    }
+    printf("Unpadding 5 bytes: %slength: %zu\n", p1, new1);
+    printf("Unpadding 8 bytes: %slength: %zu\n", p2, new2);
+    printf("Unpadding 10 bytes: %slength: %zu\n", p3, new3);
+    free_padding_pkc7s(p1);
+    free_padding_pkc7s(p2);
+    free_padding_pkc7s(p3);
+    #endif
 
     #ifdef TEXT
     if (argc < 2){
@@ -74,13 +115,21 @@ int main(int argc, char **argv){
     #ifdef DES
     char key[8];
     des_keygen(key);
-    int message_len = encrypt_des_ecb(content, file_size, key, cipher);
+    size_t padded_len;
+    unsigned char* padded_content = NULL;
+    if (file_size % 8 != 0){
+        padded_content = pkcs7_padding(content, file_size, 8, &padded_len);
+
+    }
+    
+    int message_len = encrypt_des_ecb(padded_content, padded_len, key, cipher);
     print_hexadecimal(cipher, file_size);
-    decrypt_des_ecb(cipher, message_len, key, original);
+    decrypt_des_ecb(cipher, padded_len, key, original);
     printf("Original: %s\n", original);
+    if (padded_content)
+        free_padding_pkc7s(padded_content);
     #endif
     
-  
     free(content);
     free(cipher);
     free(original);
