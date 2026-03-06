@@ -42,9 +42,16 @@ Uso: <br>
 ./main ../tests/des.txt
 ```
 
-Compilar para padding:
+Compilar para padding:<br>
 ```
 gcc -DPADDING main.c padding.c -o main
+./main
+```
+
+Compilar para ver llaves: <br>
+```
+gcc -DKEYS main.c keys.c -o main
+./main
 ```
 ## Respuestas
 
@@ -60,7 +67,9 @@ lo cual para los estándares actuales es basante vulnerable por la capacidad com
 
 *Output de las llaves*
 ```
-
+AES KEY: bf 7d c9 b9 3d bc 4f 2c fc 8b ba b4 e5 13 91 c3 66 b0 af 59 a5 ae 08 cd 17 d9 56 1f d7 a5 55 c3 
+DES KEY: 4f 13 9d 25 5b 40 34 1f
+3DES KEY: f4 31 83 2c 2a 46 38 38 7f 40 89 45 92 b6 e0 07 d9 0e f2 76 ad da 7c 3d
 ```
 ### 2.2
 *Pregunta* Compare ECB vs CBC mostrando:<br>
@@ -75,9 +84,9 @@ Sí se puede ver la diferencia ya que con el CBC se nota lo más similar a ruido
 se ve más como un relieve o patrones a lo largo de la imagen lo cual deja ver aún su diseño. <br>
 
 *Imágenes*
-![Original](src/tux.png)
-![AES_256_ECB](src/tux_aes_ecb.png)
-![AES_256_CBC](src/tux_aes_cbc.png)
+![Original](images/bill.png)
+![AES_256_ECB](images/bill_aes_ecb.png)
+![AES_256_CBC](images/bill_aes_cbc.png)
 
 ### 2.3
 *Pregunta* ¿Por qué no debemos usar ECB en datos sensibles?<br>
@@ -101,13 +110,6 @@ d4 80 e6 e7 08 c0 97 be e0 5f 05 98 e9 db 9d c3 3e fc 81 d6 a7 0f 84 db 4e db 70
 *Pregunta* ¿Qué es el vector de inicialización y por qué es necesario en CBC pero no en ECB?<br>
 El IV es un vector que se utiliza cuando vamos a cifrar el bloque consecutivo al bloque actual. Esto le da cierta aleatoriedad o cambio para que los bloques no queden idénticos unos con los otros. <br>
 
-Mismo IV<br>
-```
-
-```
-Diferente IV<br>
-```
-```
 
 ### 2.5
 *Pregunta* ¿Qué es el padding y por qué es necesario? <br>
@@ -116,21 +118,33 @@ longitud esperada. Es decir, llenar con un valor determinado las casillas faltan
 
 Mensaje de 5 bytes:<br>
 ```
+Padding 5 bytes: Hola length: 8
+48 6f 6c 61 00 03 03 03
 ```
 Mensaje de 8 bytes: <br>
 ```
+Padding 8 bytes: Palabra length: 16
+50 61 6c 61 62 72 61 00 08 08 08 08 08 08 08 08
 ```
 Mensaje de 10 bytes: <br>
 ```
+Padding 10 bytes: Problemas length: 16
+50 72 6f 62 6c 65 6d 61 73 00 06 06 06 06 06 06
 ```
 Unpad 5 bytes:<br>
 ```
+Unpadding 5 bytes: Hola length: 5
+48 6f 6c 61 00
 ```
 Unpad 8 bytes:<br>
 ```
+Unpadding 8 bytes: Palabra length: 8
+50 61 6c 61 62 72 61 00
 ```
 Unpad 10 bytes:<br>
 ```
+Unpadding 10 bytes: Problemas length: 10
+50 72 6f 62 6c 65 6d 61 73 00
 ```
 
 ### 2.6

@@ -51,6 +51,5 @@ int pkcs7_unpadding(unsigned char* buffer, size_t* length, unsigned char blocksi
 }
 
 void free_padding_pkc7s(unsigned char* padded){
-    printf("Freeing memory\n");
 	free(padded);
 }

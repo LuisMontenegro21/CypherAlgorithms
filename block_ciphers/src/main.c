@@ -18,28 +18,38 @@
 
 
 #ifdef AES
-#include "aes.h"s
+#include "aes.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 #endif
 
-#ifdef TEXT
 void print_hexadecimal(unsigned char *msg, size_t length){
     for (size_t i = 0; i<length; ++i) {
         printf("%02hhx ", msg[i]); 
     }
     printf("\n");
 }
-#endif
 
 
 
 int main(int argc, char **argv){
     #ifdef KEYS
-
+    unsigned char aes_key[32];
+    unsigned char des_key[8];
+    unsigned char des3_key[24];
+    int i1 = aes_keygen(aes_key, 32);
+    int i2 = des_keygen(des_key);
+    int i3 = des3_keygen(des3_key, 24);
+    printf("AES KEY: ");
+    print_hexadecimal(aes_key, 32);
+    printf("DES KEY: ");
+    print_hexadecimal(des_key, 8);
+    printf("3DES KEY: ");
+    print_hexadecimal(des3_key, 24);
     #endif
+
 
     #ifdef PADDING
     char pad1[5] = "Hola";
@@ -55,9 +65,14 @@ int main(int argc, char **argv){
         perror("Error allocating");
         return 1;
     }
+    
     printf("Padding 5 bytes: %s length: %zu\n", p1, new1);
+    print_hexadecimal(p1, new1);
     printf("Padding 8 bytes: %s length: %zu\n", p2, new2);
+    print_hexadecimal(p2, new2);
     printf("Padding 10 bytes: %s length: %zu\n", p3, new3);
+    print_hexadecimal(p3, new3);
+
     int i1 =pkcs7_unpadding(p1, &new1, 8);
     int i2 = pkcs7_unpadding(p2, &new2, 8);
     int i3 = pkcs7_unpadding(p3, &new3, 8);
@@ -65,9 +80,13 @@ int main(int argc, char **argv){
         perror("Error unpadding");
         return 1;
     }
-    printf("Unpadding 5 bytes: %slength: %zu\n", p1, new1);
-    printf("Unpadding 8 bytes: %slength: %zu\n", p2, new2);
-    printf("Unpadding 10 bytes: %slength: %zu\n", p3, new3);
+
+    printf("Unpadding 5 bytes: %s length: %zu\n", p1, new1);
+    print_hexadecimal(p1, new1);
+    printf("Unpadding 8 bytes: %s length: %zu\n", p2, new2);
+    print_hexadecimal(p2, new2);
+    printf("Unpadding 10 bytes: %s length: %zu\n", p3, new3);
+    print_hexadecimal(p3, new3);
     free_padding_pkc7s(p1);
     free_padding_pkc7s(p2);
     free_padding_pkc7s(p3);
