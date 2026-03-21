@@ -17,6 +17,7 @@ def rsa_keygen(bits: int = 3072) -> tuple:
 def save_rsa(priv, pub) -> None:
     path: str = os.getcwd()
     full_path = f"{path}/keys"
+    os.makedirs(name=full_path, exist_ok=True)
     with open(f"{full_path}/private.pem", "wb") as f:
         f.write(priv)
     with open(f"{full_path}/public.pem", "wb") as f:
@@ -27,4 +28,4 @@ def save_rsa(priv, pub) -> None:
 
 if __name__ == '__main__':
     priv, pub = rsa_keygen(bits=3072)
-    print(f"Private key: {priv} Public key: {pub}")
+    save_rsa(priv, pub)
