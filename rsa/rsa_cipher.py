@@ -1,9 +1,9 @@
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
-from rsa_keygen import rsa_keygen
 import binascii
 
 def rsa_cipher(message: bytes, public_key_pem: bytes) -> bytes:
+    
     cipher = PKCS1_OAEP.new(public_key_pem)
     ciphertext = cipher.encrypt(message)
     return ciphertext
